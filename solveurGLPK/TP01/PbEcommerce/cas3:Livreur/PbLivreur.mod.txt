@@ -1,0 +1,35 @@
+#  GLPK model file created by SUN for RO teaching
+
+
+###############################  Model ###############################
+
+
+
+###############################  Sets  ###############################
+
+set CLIENT; 
+
+################### Variables ###################
+
+var X{i in CLIENT, j in CLIENT}, binary;
+
+
+
+###################  Constants: Data to load   #########################
+
+param distances{i in CLIENT, j in CLIENT}; 
+
+
+################### Constraints ###################
+
+s.t. RespectMaxTache{i in CLIENT}: sum{j in CLIENT} X[i,j] = 1;
+s.t. RespectMaxPersonne{j in CLIENT}: sum{i in CLIENT} X[i,j] = 1;
+
+
+
+###### Objective ######
+
+minimize DistanceTolal: 
+		sum{i in CLIENT, j in CLIENT} X[i,j] * distances[i,j]; 
+
+end;

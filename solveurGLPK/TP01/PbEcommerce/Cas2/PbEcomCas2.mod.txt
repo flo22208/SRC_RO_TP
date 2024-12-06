@@ -1,0 +1,50 @@
+#  GLPK model file created by SUN for RO teaching
+
+
+###############################  Model ###############################
+
+
+
+###############################  Sets  ###############################
+
+set DEMANDES; 
+
+set FLUIDES;	
+
+set MAGASINS;
+
+
+
+################### Variables ###################
+
+var K{i in DEMANDES, j in MAGASINS,v in FLUIDES}, >=0;
+
+var TRAJETS{i in DEMANDES, j in MAGASINS}, binary;
+
+###################  Constants: Data to load   #########################
+
+param COMMANDES{i in DEMANDES,v in FLUIDES};
+
+param STOCKS{j in MAGASINS,v in FLUIDES};
+
+param COUTSFIXE{i in DEMANDES, j in MAGASINS};
+
+param COUTSVAR{i in DEMANDES, j in MAGASINS};
+
+
+################### Constraints ###################
+
+s.t. RespectCommandes{i in DEMANDES, v in FLUIDES}: sum{j in MAGASINS} K[i,j,v] = COMMANDES[i,v];
+s.t. RespectStocks{j in MAGASINS, v in FLUIDES}: sum{i in DEMANDES} K[i,j,v] <= STOCKS[j,v];
+s.t. RespectTrajets{i in DEMANDES, j in MAGASINS, v in FLUIDES} : K[i,j,v] <= TRAJETS[i,j] * 1000; 
+
+#ajouter une contrainte pour rendre les t=1 lorsque on fait un trajet dans ce magasins
+
+
+###### Objective ######
+
+minimize cout: 
+		sum{i in DEMANDES, j in MAGASINS} TRAJETS[i,j]*COUTSFIXE[i,j] + 
+        sum{i in DEMANDES, j in MAGASINS} sum{v in FLUIDES} K[i,j,v] * COUTSVAR[i,j];
+
+end;
