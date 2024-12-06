@@ -24,6 +24,7 @@ param distances{i in CLIENT, j in CLIENT};
 
 s.t. RespectMaxTache{i in CLIENT}: sum{j in CLIENT} X[i,j] = 1;
 s.t. RespectMaxPersonne{j in CLIENT}: sum{i in CLIENT} X[i,j] = 1;
+s.t. RespectChemin{i in CLIENT, j in CLIENT}: sum{v in CLIENT} X[v,i] <= (1-X[i,j])*1000;
 
 
 
