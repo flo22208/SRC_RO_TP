@@ -1,36 +1,42 @@
-#  GLPK model file created by SUN for RO teaching
-
-
 ###############################  Model ###############################
-
-
+# Problème d'affectation de tâches avec prise en compte des préférences
+# Il y a autant de taches que de personnes
 
 ###############################  Sets  ###############################
 
+# liste des personnes
 set PERSONNE; 
 
+# liste des taches
 set TACHE;	
+
 
 ################### Variables ###################
 
+# Matrice carrée de binaires, les lignes représentent les personnes
+# et les colonnes représentent les taches. X(i,j) vaut 1 si on assigne
+# la tache j à la personne i et vaut 0 sinon
 var X{i in PERSONNE, j in TACHE}, binary;
-
 
 
 ###################  Constants: Data to load   #########################
 
-param preference{i in PERSONNE, j in TACHE}; 
+# Matrice carrée d'entiers naturels compris dans [0,10] représentant
+# les préférences des personnes pour chaque tache
+param PREF{i in PERSONNE, j in TACHE}; 
 
 
 ################### Constraints ###################
 
-s.t. RespectMaxTache{i in PERSONNE}: sum{j in TACHE} X[i,j] <= 1;
-s.t. RespectMaxPersonne{j in TACHE}: sum{i in PERSONNE} X[i,j] <= 1;
+# Un personne ne peut avoir qu'une seule tache
+s.t. RespectMaxTache{i in PERSONNE}: sum{j in TACHE} X[i,j] = 1;
+# Une tache ne peut être associée qu'à une seule personne
+s.t. RespectMaxPersonne{j in TACHE}: sum{i in PERSONNE} X[i,j] = 1;
 
 
 ###### Objective ######
 
-maximize BeneficeTotal: 
-		sum{i in PERSONNE, j in TACHE} X[i,j] * preference[i,j]; 
+maximize PreferencesFinalesTotal: 
+		sum{i in PERSONNE, j in TACHE} X[i,j] * PREF[i,j]; 
 
 end;
