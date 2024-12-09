@@ -30,6 +30,7 @@ param PREF{i in PERSONNE, j in TACHE};
 
 # Un personne ne peut avoir qu'une seule tache
 s.t. RespectMaxTache{i in PERSONNE}: sum{j in TACHE} X[i,j] = 1;
+
 # Une tache ne peut être associée qu'à une seule personne
 s.t. RespectMaxPersonne{j in TACHE}: sum{i in PERSONNE} X[i,j] = 1;
 

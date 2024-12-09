@@ -1,37 +1,43 @@
-#  GLPK model file created by SUN for RO teaching
-
-
 ###############################  Model ###############################
-
+# Problème d'affectation de commandes en e-commerce avec les demandes par cients,
+# le coût par magasin et les stocks par magasin
 
 
 ###############################  Sets  ###############################
 
+# liste des demandes
 set DEMANDES; 
 
+# liste des fluides (ou colis)
 set FLUIDES;	
 
+# liste des magasins
 set MAGASINS;
 
 ################### Variables ###################
 
-#var K{i in DEMANDES, j in MAGASINS,v in FLUIDES}, >=0;
-
-var K{i in DEMANDES, j in MAGASINS,v in FLUIDES}, >=0, integer;
+# K correspond aux portions de fluide v prises dans le magasin j pour la demande i 
+var K{i in DEMANDES, j in MAGASINS, v in FLUIDES}, >=0;
 
 
 ###################  Constants: Data to load   #########################
 
+# COMMANDES(i,v) correspond à la quantité de fluide v commandée par la demande i
 param COMMANDES{i in DEMANDES,v in FLUIDES};
 
+# STOCKS(j,v) correspond à la quantité en stock de fluide v dans le magasin j
 param STOCKS{j in MAGASINS,v in FLUIDES};
 
+# COUTS(j,v) correspond au coût de livraison d'un fluide v par le magasin j
 param COUTS{j in MAGASINS,v in FLUIDES};
 
 
 ################### Constraints ###################
 
+# la quantité totale d'un fluide pris dans tous les magasins doit être égale à la quantité demandée dans la commande
 s.t. RespectCommandes{i in DEMANDES, v in FLUIDES}: sum{j in MAGASINS} K[i,j,v] = COMMANDES[i,v];
+
+# la somme des demandes pour un fluide et un magasin ne doit pas dépasser le stock de ce magasin
 s.t. RespectStocks{j in MAGASINS, v in FLUIDES}: sum{i in DEMANDES} K[i,j,v] <= STOCKS[j,v];
 
 
