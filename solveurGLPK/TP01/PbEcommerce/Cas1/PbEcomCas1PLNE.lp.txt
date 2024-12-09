@@ -1,4 +1,4 @@
-\* Problem: PbEcomCas1 *\
+\* Problem: PbEcomCas1PLNE *\
 
 Minimize
  cout: + K(D1,M1,F1) + 2 K(D1,M2,F1) + 3 K(D1,M3,F1) + K(D1,M1,F2)
@@ -16,5 +16,19 @@ Subject To
  RespectStocks(M2,F2): + K(D1,M2,F2) + K(D2,M2,F2) <= 2
  RespectStocks(M3,F1): + K(D1,M3,F1) + K(D2,M3,F1) <= 2
  RespectStocks(M3,F2): + K(D1,M3,F2) + K(D2,M3,F2) <= 1
+
+Generals
+ K(D1,M1,F1)
+ K(D1,M2,F1)
+ K(D1,M3,F1)
+ K(D1,M1,F2)
+ K(D1,M2,F2)
+ K(D1,M3,F2)
+ K(D2,M1,F1)
+ K(D2,M2,F1)
+ K(D2,M3,F1)
+ K(D2,M1,F2)
+ K(D2,M2,F2)
+ K(D2,M3,F2)
 
 End
